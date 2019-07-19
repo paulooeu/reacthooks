@@ -1,25 +1,29 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, { useState, useEffect } from 'react';
 
 function App() {
+  const [tecnologiaList, setTecnologia] = useState(['ReactJs', 'React Native']);
+  const [novaTecnologia, setNovaTecnologia] = useState('');
+
+  function handleAdd() {
+    setTecnologia([...tecnologiaList, novaTecnologia]);
+    setNovaTecnologia('');
+  }
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <ul>
+        {tecnologiaList.map(tecnologia => (
+          <li key={tecnologia}>{tecnologia}</li>
+        ))}
+      </ul>
+      <input
+        type="text"
+        value={novaTecnologia}
+        onChange={e => setNovaTecnologia(e.target.value)}
+      />
+      <button type="button" onClick={handleAdd}>
+        Adicionar
+      </button>
+    </>
   );
 }
 
