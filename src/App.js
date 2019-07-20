@@ -1,13 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo, useCallback } from 'react';
 
 function App() {
-  const [tecnologiaList, setTecnologia] = useState(['ReactJs', 'React Native']);
+  const [tecnologiaList, setTecnologia] = useState([]);
   const [novaTecnologia, setNovaTecnologia] = useState('');
 
-  function handleAdd() {
+  const handleAdd = useCallback(() => {
     setTecnologia([...tecnologiaList, novaTecnologia]);
     setNovaTecnologia('');
-  }
+  }, [novaTecnologia, tecnologiaList]);
+
+  useEffect(() => {
+    const tecnologias = localStorage.getItem('Tecnologia');
+    if (tecnologias) {
+      setTecnologia(JSON.parse(tecnologias));
+    }
+  }, []);
+
+  useEffect(() => {
+    localStorage.setItem('Tecnologia', JSON.stringify(tecnologiaList));
+  }, [tecnologiaList]);
+  const quantidadeTecnologia = useMemo(() => tecnologiaList.length, [
+    tecnologiaList,
+  ]);
   return (
     <>
       <ul>
@@ -15,6 +29,9 @@ function App() {
           <li key={tecnologia}>{tecnologia}</li>
         ))}
       </ul>
+
+      <strong>Voce tem {quantidadeTecnologia} tecnologias</strong>
+      <br />
       <input
         type="text"
         value={novaTecnologia}
